@@ -1,0 +1,12 @@
+# PyTorch 基础
+torch>=1.8.0
+torchvision
+
+# YOLOv8 及辅助库
+ultralytics
+opencv-python
+matplotlib
+pandas
+pillow
+seaborn
+tqdm

@@ -1,0 +1,22 @@
+# PPT
+tmp/
+
+.claude/
+CLAUDE.md
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# 环境
+.env
+.venv
+env/
+venv/
+ENV/
+
+# YOLO & PyTorch 权重与运行结果 (建议忽略大文件)
+*.pt
+*.pth
+runs/
