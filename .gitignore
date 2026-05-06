@@ -20,3 +20,4 @@ ENV/
 *.pt
 *.pth
 runs/
+datasets/
