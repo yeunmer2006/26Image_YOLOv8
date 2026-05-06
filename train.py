@@ -16,7 +16,7 @@ def train_model():
     model = YOLO(config.MODEL_NAME)
     print(f"已加载模型: {config.MODEL_NAME}")
 
-    # 开始训练
+    # 开始训练（关闭 Mosaic 增强用于数据增强消融实验）
     results = model.train(
         data=config.DATA_YAML,
         epochs=config.EPOCHS,
@@ -34,6 +34,7 @@ def train_model():
         save_period=config.SAVE_PERIOD,
         patience=config.PATIENCE,
         verbose=True,
+        mosaic=config.MOSAIC,  # 关闭 Mosaic 增强（数据增强消融实验）
     )
 
     print("训练完成!")
