@@ -7,7 +7,7 @@ import config
 
 def train_model():
     """
-    使用 HomeObjects-3K 数据集训练 YOLOv8 模型
+    使用 SKU-110K 数据集训练 YOLOv8 模型
 
     Returns:
         results: 训练结果对象

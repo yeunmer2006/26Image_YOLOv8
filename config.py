@@ -7,8 +7,8 @@ MODEL_NAME = 'yolov8n.pt'      # 预训练模型: yolov8n/s/m/l/x.pt
 MODEL_VARIANT = 'n'            # 模型大小标识: n/s/m/l/x
 
 # ============ 数据集配置 ============
-# HomeObjects-3K 是 Ultralytics 内置数据集，直接使用 YAML 名称
-DATA_YAML = 'HomeObjects-3K.yaml'
+# SKU-110K 是 Ultralytics 内置数据集，直接使用 YAML 名称（数据集约 13.6GB）
+DATA_YAML = 'SKU-110K.yaml'
 
 # ============ 训练参数 ============
 EPOCHS = 100               # 训练轮数

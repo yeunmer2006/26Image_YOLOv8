@@ -14,6 +14,7 @@
 
 ## 二、数据来源与实施环境
 * **数据集**：选用 SKU-110K 数据集，该数据集针对超市货架密集排列的商品进行检测，包含包围框标注数据。
+  > Goldman E, Herzig R, Eisenschtat A, Goldberger J, Hassner T. "Precise Detection in Densely Packed Scenes". In CVPR 2019.
 * **数据预处理计划**：清洗标注文件并进行格式转换（转换为YOLOv8归一化的 `.txt` 格式），随后划分为训练集、验证集与测试集。
 * **实施环境**：硬件配置为 RTX 4060 (8GB) GPU，软件运行环境为 WSL2 + Linux，采用 PyTorch 框架。
 
