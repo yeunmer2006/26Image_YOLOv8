@@ -32,7 +32,7 @@ RUN_NAME = 'homeobjects_n_no_mosaic'  # 本次运行名称
 SAVE_DIR = 'results/before'      # 测试结果保存目录
 
 # ============ 测试配置 ============
-# 额外5张测试图片路径（个人完成）
+# 额外5张测试图片路径
 TEST_IMAGES = [
     'test_images/img1.jpg',
     'test_images/img2.jpg',
