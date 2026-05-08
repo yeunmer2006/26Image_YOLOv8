@@ -7,38 +7,30 @@
 
 ---
 
-## Step 1: 准备 Google Drive
+## Step 1: 准备 Git 仓库（本地操作）
 
-1. 登录 Google Drive
-2. 创建文件夹 `YOLOv8_project`
-3. 上传本项目所有文件到这个文件夹：
-   - `config.py`, `train.py`, `run.py`, `test_model.py`
-   - `test_extra_images.py`, `compare_results.py`
-   - `datasets/convert_to_yolo.py`
-   - `datasets/SKU-110K.yaml`
-   - `test_images/` 文件夹（5张测试图）
-4. **注意**：SKU-110K 数据集约 13.6GB，可以直接在 Colab 中下载，不需要上传
+1. 确保 `colab` 分支已推送到远程仓库（GitHub / Gitee 等）
+2. 仓库地址例如：`https://github.com/yeunmer2006/YOLOv8_project.git`
 
 ---
 
-## Step 2: 在 Colab 中打开笔记本
+## Step 2: 在 Colab 中克隆仓库
 
 1. 打开 [Google Colab](https://colab.research.google.com/)
-2. 点击 `文件` → `上传笔记本` 或直接新建笔记本
-3. 将以下代码依次粘贴到代码格中执行
+2. 新建笔记本
+3. 在代码格中粘贴以下命令（将 `YOUR_REPO` 替换为你的仓库地址）：
+
+```python
+# 克隆仓库（使用 colab 分支）
+!git clone -b colab https://github.com/yeunmer2006/YOLOv8_project.git
+%cd YOLOv8_project
+```
 
 ---
 
 ## Step 3: 环境初始化
 
 ```python
-# 挂载 Google Drive
-from google.colab import drive
-drive.mount('/content/drive')
-
-# 切换到项目目录
-%cd /content/drive/MyDrive/YOLOv8_project
-
 # 安装依赖
 !pip install ultralytics
 
@@ -79,10 +71,8 @@ print(f'显存: {torch.cuda.get_device_properties(0).total_memory / 1024**3:.1f}
 ## Step 6: 断点续训（如中断后继续）
 
 ```python
-from ultralytics import YOLO
-
-# 加载上次保存的 checkpoint
-model = YOLO('/content/drive/MyDrive/YOLOv8_project/yolo_finetune/homeobjects_n_no_mosaic/weights/last.pt')
+# 加载上次保存的 checkpoint（last.pt 在项目目录的 weights 文件夹下）
+model = YOLO('yolo_finetune/homeobjects_n_no_mosaic/weights/last.pt')
 
 # 从断点继续训练
 results = model.train(resume=True)
@@ -119,9 +109,10 @@ setInterval(ClickConnect, 5 * 60000); // 每5分钟点击一次
 |------|------|
 | **免费时长** | 每次最长 12 小时，超时会被重置 |
 | **GPU 配额** | 长期使用可能遇到配额不足，需要等待或升级 Pro |
-| **数据保存** | 所有输出文件保存在 Google Drive，断连不会丢失 |
-| **下载模型** | 训练完成后可从 Drive 下载 `best.pt` 或 `last.pt` |
+| **数据保存** | 通过 git push 同步到远程仓库，断连不会丢失 |
+| **下载模型** | 训练完成后可从仓库下载 `best.pt` 或 `last.pt` |
 | **数据集** | SKU-110K 约 13.6GB，每次新会话需要重新下载 |
+| **代码同步** | 修改代码后记得 git push 保存到远程仓库 |
 
 ---
 
@@ -140,8 +131,10 @@ setInterval(ClickConnect, 5 * 60000); // 每5分钟点击一次
 # 安装特定版本
 !pip install ultralytics==8.2.0
 
-# 手动同步 Drive（确保文件已保存）
-drive.flush_and_unmount()
+# 提交并推送代码到远程仓库
+!git add .
+!git commit -m "更新训练结果"
+!git push
 ```
 
 ---
