@@ -2,13 +2,17 @@
 YOLOv8 微调配置 - 修改此文件调整所有参数
 """
 
+# ============ 训练模式 ============
+TRAIN_MODE = 'scratch'         # 'scratch' 从头训练 / 'resume' 继续训练
+RESUME_WEIGHTS = '/mnt/d/yeunmer/YOLOv8_project/runs/detect/yolo_finetune/homeobjects_n_no_mosaic/weights/last.pt'  # 继续训练的权重路径
+
 # ============ 模型配置 ============
 MODEL_NAME = 'yolov8n.pt'      # 预训练模型: yolov8n/s/m/l/x.pt
 MODEL_VARIANT = 'n'            # 模型大小标识: n/s/m/l/x
 
 # ============ 数据集配置 ============
-# SKU-110K 是 Ultralytics 内置数据集，直接使用 YAML 名称（数据集约 13.6GB）
-DATA_YAML = 'SKU-110K.yaml'
+# 使用本地数据集配置
+DATA_YAML = '/mnt/d/yeunmer/YOLOv8_project/datasets/SKU-110K.yaml'
 
 # ============ 训练参数 ============
 EPOCHS = 100               # 训练轮数

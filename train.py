@@ -12,11 +12,15 @@ def train_model():
     Returns:
         results: 训练结果对象
     """
-    # 加载预训练模型
-    model = YOLO(config.MODEL_NAME)
-    print(f"已加载模型: {config.MODEL_NAME}")
+    # 根据训练模式加载模型
+    if config.TRAIN_MODE == 'resume':
+        model = YOLO(config.RESUME_WEIGHTS)
+        print(f"继续训练，权重: {config.RESUME_WEIGHTS}")
+    else:
+        model = YOLO(config.MODEL_NAME)
+        print(f"从头训练，加载预训练模型: {config.MODEL_NAME}")
 
-    # 开始训练（关闭 Mosaic 增强用于数据增强消融实验）
+    # 开始训练
     results = model.train(
         data=config.DATA_YAML,
         epochs=config.EPOCHS,
@@ -34,7 +38,8 @@ def train_model():
         save_period=config.SAVE_PERIOD,
         patience=config.PATIENCE,
         verbose=True,
-        mosaic=config.MOSAIC,  # 关闭 Mosaic 增强（数据增强消融实验）
+        mosaic=config.MOSAIC,
+        resume=(config.TRAIN_MODE == 'resume'),
     )
 
     print("训练完成!")
