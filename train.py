@@ -15,19 +15,15 @@ def train_model(resume=False):
     Returns:
         results: 训练结果对象
     """
-    # 加载预训练模型（如果 resume=True，加载 last.pt）
-    if resume:
-        model_path = f"{config.PROJECT_ROOT}/yolo_finetune/{config.RUN_NAME}/weights/last.pt"
-        model = YOLO(model_path)
-        print(f"从断点恢复: {model_path}")
+    # 根据训练模式加载模型
+    if config.TRAIN_MODE == 'resume':
+        model = YOLO(config.RESUME_WEIGHTS)
+        print(f"继续训练，权重: {config.RESUME_WEIGHTS}")
     else:
         model = YOLO(config.MODEL_NAME)
-        print(f"已加载模型: {config.MODEL_NAME}")
+        print(f"从头训练，加载预训练模型: {config.MODEL_NAME}")
 
-    # 项目保存路径（Colab 下自动保存到 Google Drive）
-    project_path = f"{config.PROJECT_ROOT}/yolo_finetune"
-
-    # 开始训练（关闭 Mosaic 增强用于数据增强消融实验）
+    # 开始训练
     results = model.train(
         data=config.DATA_YAML,
         epochs=config.EPOCHS,
@@ -39,14 +35,14 @@ def train_model(resume=False):
         momentum=config.MOMENTUM,
         weight_decay=config.WEIGHT_DECAY,
         warmup_epochs=config.WARMUP_EPOCHS,
-        project=project_path,
+        project=config.PROJECT_NAME,
         name=config.RUN_NAME,
         save=True,
         save_period=config.SAVE_PERIOD,
         patience=config.PATIENCE,
         verbose=True,
-        mosaic=config.MOSAIC,  # 关闭 Mosaic 增强（数据增强消融实验）
-        resume=resume,         # 断点续训
+        mosaic=config.MOSAIC,
+        resume=(config.TRAIN_MODE == 'resume'),
     )
 
     print("训练完成!")
