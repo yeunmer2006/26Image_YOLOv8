@@ -19,7 +19,7 @@ if is_colab():
     PROJECT_ROOT = DRIVE_BASE
 else:
     # 本地环境配置
-    PROJECT_ROOT = '/mnt/d/yeunmer/YOLOv8_project'
+    PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
     DATA_YAML = 'datasets/SKU-110K.yaml'
     TEST_IMAGES_BASE = 'test_images'
 
