@@ -37,7 +37,7 @@ def main():
         pretrained_path = get_model_path(is_pretrained=True)
         print(f"预训练模型路径: {pretrained_path}")
 
-        # 由于预训练模型是原始 COCO 权重，不在 HomeObjects-3K 上评估
+        # 由于预训练模型是原始 COCO 权重
         # 直接进入训练阶段
 
         print("预训练模型测试跳过（将在额外图片上测试）")

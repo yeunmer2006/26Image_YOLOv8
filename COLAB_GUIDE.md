@@ -23,7 +23,7 @@
 ```python
 # 克隆仓库（使用 colab 分支）
 !git clone -b colab https://github.com/yeunmer2006/YOLOv8_project.git
-%cd YOLOv8_project
+%cd /26Image_YOLOv8
 ```
 
 ---
