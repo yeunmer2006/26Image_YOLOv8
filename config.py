@@ -14,13 +14,17 @@ def is_colab():
 if is_colab():
     # Google Drive 挂载路径
     PROJECT_ROOT = '/content/drive/MyDrive/YOLOv8_project'
-    DATA_YAML = 'SKU-110K.yaml'
+    DATA_YAML = f'{PROJECT_ROOT}/datasets/SKU-110K.yaml'
     TEST_IMAGES_BASE = f'{PROJECT_ROOT}/test_images'
 else:
     # 本地环境：相对于当前文件所在目录
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-    DATA_YAML = 'SKU-110K.yaml'
+    DATA_YAML = f'{PROJECT_ROOT}/datasets/SKU-110K.yaml'
     TEST_IMAGES_BASE = f'{PROJECT_ROOT}/test_images'
+
+# 如果本地不存在 datasets/SKU-110K.yaml，则退回使用官方名称让 YOLOv8 自动下载或处理
+if not os.path.exists(DATA_YAML):
+    DATA_YAML = 'SKU-110K.yaml'
 
 # ============ 输出配置 ============
 PROJECT_NAME = 'yolo_finetune'   # 项目目录名

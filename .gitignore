@@ -21,3 +21,4 @@ ENV/
 *.pth
 runs/
 datasets/
+*.zip
