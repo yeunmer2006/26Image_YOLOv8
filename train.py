@@ -40,6 +40,10 @@ def train_model():
         verbose=True,
         mosaic=config.MOSAIC,
         resume=(config.TRAIN_MODE == 'resume'),
+        val=config.VAL,
+        plots=config.PLOTS,
+        workers=config.WORKERS,
+        cache=config.CACHE
     )
 
     print("训练完成!")
