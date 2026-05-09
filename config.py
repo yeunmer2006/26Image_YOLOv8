@@ -14,12 +14,12 @@ def is_colab():
 if is_colab():
     # Google Drive 挂载路径
     PROJECT_ROOT = '/content/drive/MyDrive/YOLOv8_project'
-    DATA_YAML = f'{PROJECT_ROOT}/datasets/SKU-110K.yaml'
+    DATA_YAML = 'SKU-110K.yaml'
     TEST_IMAGES_BASE = f'{PROJECT_ROOT}/test_images'
 else:
     # 本地环境：相对于当前文件所在目录
     PROJECT_ROOT = os.path.dirname(os.path.abspath(__file__))
-    DATA_YAML = f'{PROJECT_ROOT}/datasets/SKU-110K.yaml'
+    DATA_YAML = 'SKU-110K.yaml'
     TEST_IMAGES_BASE = f'{PROJECT_ROOT}/test_images'
 
 # ============ 输出配置 ============
@@ -28,7 +28,7 @@ RUN_NAME = 'homeobjects_n_no_mosaic'  # 本次加载运行运行名称
 SAVE_DIR = f'{PROJECT_ROOT}/results/before'  # 测试结果保存目录
 
 # ============ 训练模式 ============
-TRAIN_MODE = 'resume'         # 'scratch' 从头训练 / 'resume' 继续训练
+TRAIN_MODE = 'scratch'         # 'scratch' 从头训练 / 'resume' 继续训练
 RESUME_WEIGHTS = f'{PROJECT_ROOT}/runs/detect/{PROJECT_NAME}/{RUN_NAME}/weights/last.pt'  # 继续训练的权重路径
 
 # ============ 模型配置 ============
@@ -41,7 +41,7 @@ MODEL_VARIANT = 'n'            # 模型大小标识: n/s/m/l/x
 # ============ 训练参数 ============
 EPOCHS = 100               # 训练轮数
 IMG_SIZE = 640             # 输入图像大小
-BATCH_SIZE = 16            # RTX 4060 建议: 16-32
+BATCH_SIZE = 32            # RTX 4060 建议: 16-32 
 DEVICE = 0                 # GPU设备，0表示第一块GPU，''表示CPU
 
 # ============ 优化器参数 ============
