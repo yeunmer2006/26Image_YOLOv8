@@ -21,3 +21,5 @@ ENV/
 *.pth
 runs/
 Yolo_finetune/
+datasets/
+*.zip
