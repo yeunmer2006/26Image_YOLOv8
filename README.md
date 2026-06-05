@@ -1,45 +1,152 @@
-# YOLOv8模型微调与性能验证
+# YOLOv8 模型微调与性能验证
 
-> * **我的核心任务**：负责“**数据增强消融组**”（使用 `yolov8n.pt` 并**关闭 Mosaic 增强**），探究数据增强策略在封闭拥挤场景下对模型性能的具体影响。
+本项目用于完成图像处理与识别大作业：基于 Ultralytics YOLOv8 在 SKU-110K 数据集上进行目标检测模型微调，并对微调前后性能进行量化和定性验证。
 
-## 基本信息
-* **项目名称**：YOLOv8模型微调与性能验证（Image Processing and Vision — Final Project Proposal）
-* **时间**：2026年5月
-* **团队成员**：刘易函、卓识、陈奕莱、皇甫泊宁
+我的个人实验方向是数据增强消融组：使用 `yolov8n.pt` 作为预训练权重，关闭 Mosaic 增强，观察密集货架商品检测场景下训练指标和检测效果的变化。
 
-## 一、选题内容与研究目标
-* **研究背景**：通用目标检测模型在开放域表现优异，但在特定封闭场景（如超市实体零售货架感知）中面临极端拥挤、严重遮挡以及同类商品物理特征高度相似的挑战。
-* **研究目标**：基于非COCO数据集完成迁移学习，探究模型容量、数据增强策略、优化器参数等不同微调策略对YOLOv8的影响。此外，还将验证模型在极端密集场景下的跨域泛化能力。
-* **技术选型**：基准算法采用 Ultralytics YOLOv8，框架为 PyTorch，应用迁移学习技术。
+## 项目信息
 
-## 二、数据来源与实施环境
-* **数据集**：选用 SKU-110K 数据集，该数据集针对超市货架密集排列的商品进行检测，包含包围框标注数据。
-  > Goldman E, Herzig R, Eisenschtat A, Goldberger J, Hassner T. "Precise Detection in Densely Packed Scenes". In CVPR 2019.
-* **数据预处理计划**：清洗标注文件并进行格式转换（转换为YOLOv8归一化的 `.txt` 格式），随后划分为训练集、验证集与测试集。
-* **实施环境**：硬件配置为 RTX 4060 (8GB) GPU，软件运行环境为 WSL2 + Linux，采用 PyTorch 框架。
+| 项目 | 内容 |
+| --- | --- |
+| 任务 | YOLOv8 目标检测模型微调与性能验证 |
+| 数据集 | SKU-110K，非 COCO 数据集 |
+| 模型 | YOLOv8n |
+| 框架 | PyTorch，Ultralytics YOLOv8 |
+| 环境 | WSL2，Python 3.8+，RTX 4060 8GB |
+| 团队成员 | 刘易函、卓识、陈奕莱、皇甫泊宁 |
 
-## 三、核心方案设计（四组对照实验）
-遵循控制变量法，平行开展以下四组微调实验：
-1. **Baseline调优组**：实验目的为 Baseline Tuning，使用 `yolov8n.pt` 预训练权重，变量设置为默认超参数。
-2. **模型容量对比组**：实验目的为 Scale，使用 `yolov8s.pt` 预训练权重，变量设置为默认超参数。
-3. **数据增强消融**：实验目的为 Augmentation，使用 `yolov8n.pt` 预训练权重，变量设置为关闭 Mosaic 增强。
-4. **优化策略调优组**：实验目的为 Optimizer，使用 `yolov8n.pt` 预训练权重，变量设置为将 SGD 优化器替换为 AdamW。
+SKU-110K 面向超市货架密集排列商品检测，适合验证模型在拥挤、遮挡、小目标密集分布场景中的迁移学习效果。
 
-## 四、性能评估与额外验证方案
-* **量化性能对比**：记录 Loss 变化曲线及关键训练参数。
-  * **过程数据采集**：训练过程中明确要求**每发 5 个 Epoch 记录并保存一次各项指标及模型状态**。
-  * **该记录的作用**：通过留存高密度的中间节点（Checkpoints），**捕捉并对比不同模型配置在整个训练周期内的动态收敛过程**。这能够帮我们直观看出关闭或开启某项策略（如 Mosaic 增强）会对前期收敛速度、震荡幅度、以及出现过拟合的时间跳点产生何种影响，做到不仅看最终得分，更深度解析超参数干预的机理。
-  * 最终对比指标包括 mAP@0.5、mAP@0.5:0.95 以及 Precision / Recall。
-* **定性泛化验证（真实场景泛化能力评估）**：每位成员独立从网络或实拍场景中搜集5张真实的非同源零售货架商品图像进行验证。验证重点在于边界框置信度变化，以及密集重叠排列下的漏检和误检情况。成员需完成微调前后对比测试，并撰写个人深入分析报告。
+## 目录说明
 
-## 五、组内分工
-* **前期统筹（共享）**：确定选题、搭建环境，并完成数据集的清洗与格式转换。
-* **微调执行（独立）**：四位成员分别执行对应的平行微调实验。
-* **性能评估（独立）**：各成员搜集5张额外图片完成微调前后的对比测试。
-* **最终提交（独立）**：独立提交个人报告，内容需包含详细的微调记录、测试集性能比较以及分析报告。
+| 路径 | 用途 |
+| --- | --- |
+| `train.py` | 读取 `config.py` 并启动 YOLOv8 微调 |
+| `test_model.py` | 在验证集上测试预训练模型或微调模型 |
+| `test_extra_images.py` | 对个人额外 5 张图片做微调前后对比测试 |
+| `config.py` | 训练、验证、额外测试的统一配置 |
+| `requirements.txt` | Python 依赖列表 |
+| `docs/finetune_results/` | 报告优先引用的三次微调核心结果 |
+| `Yolo_finetune/` | 三次微调的完整原始训练输出 |
+| `test_images/` | 个人额外测试图片目录 |
 
-## 六、实施计划
-* **第10周**：完成开题阶段性汇报，敲定数据集转换脚本，并跑通YOLO基准测试流程。
-* **第11-12周**：各成员独立开展平行微调实验并收集训练日志。
-* **第13周**：汇总测试集的量化指标，并完成额外5张图像的个人推理分析。
-* **第14周**：整理分析结果，撰写并提交期末结课报告。
+`docs/finetune_results/` 只保留报告需要直接引用的数据，包括训练参数、逐 epoch 指标和训练曲线图。`Yolo_finetune/` 保留完整原始输出，用于复核、补充图表和审查，不在本次整理中删除。
+
+当前 `config.py` 默认会将新训练输出写入 `yolo_finetune/`。已归档的三次历史训练输出保存在 `Yolo_finetune/`，复现实验时需要注意目录大小写差异。
+
+## 实验设计
+
+团队整体采用控制变量法进行平行实验，比较模型容量、数据增强策略和优化器参数对 YOLOv8 微调效果的影响。我的个人实验聚焦关闭 Mosaic 增强后的三次微调对比。
+
+| 实验 | 模型 | 数据集 | 关键变量 | 目的 |
+| --- | --- | --- | --- | --- |
+| `finetune1` | `yolov8n.pt` | SKU-110K | `imgsz=640`，`batch=32`，`mosaic=0.0` | 作为个人微调的基础对照 |
+| `finetune2` | `yolov8n.pt` | SKU-110K | `imgsz=800`，`batch=32`，`mosaic=0.0` | 观察更高输入分辨率对密集目标检测的影响 |
+| `finetune3` | `yolov8n.pt` | SKU-110K | `imgsz=640`，`batch=16`，`mosaic=0.0` | 观察较小 batch size 对训练趋势和最终指标的影响 |
+
+三次实验均训练 100 个 epoch，使用相同预训练权重和相同数据集，主要对比输入尺寸和 batch size 对训练过程的影响。
+
+## 微调结果归档
+
+报告直接引用 `docs/finetune_results/` 中的结果文件：
+
+| 目录 | 来源实验 | 归档文件 |
+| --- | --- | --- |
+| `docs/finetune_results/finetune1/` | `Yolo_finetune/finetune1/` | `args.yaml`、`results.csv`、`results.png` |
+| `docs/finetune_results/finetune2/` | `Yolo_finetune/finetune2/` | `args.yaml`、`results.csv`、`results.png` |
+| `docs/finetune_results/finetune3/` | `Yolo_finetune/finetune3/` | `args.yaml`、`results.csv`、`results.png` |
+
+文件含义如下：
+
+| 文件 | 报告用途 |
+| --- | --- |
+| `args.yaml` | 记录模型、数据集、epoch、batch、imgsz、优化器、学习率、Mosaic、保存间隔等训练参数 |
+| `results.csv` | 记录每个 epoch 的训练损失、验证损失、Precision、Recall、mAP 和学习率 |
+| `results.png` | 展示 Ultralytics 自动生成的训练曲线，可用于报告中的趋势图 |
+
+## 个人三次微调对比
+
+以下最终指标来自各 `results.csv` 的第 100 个 epoch：
+
+| 实验 | Precision | Recall | mAP@0.5 | mAP@0.5:0.95 | 结论摘要 |
+| --- | ---: | ---: | ---: | ---: | --- |
+| `finetune1` | 0.90961 | 0.83550 | 0.88337 | 0.53988 | 基础输入尺寸下关闭 Mosaic 后的结果 |
+| `finetune2` | 0.91051 | 0.85209 | 0.89545 | 0.55846 | 输入尺寸提升到 800 后，Recall 和 mAP 更高 |
+| `finetune3` | 0.90861 | 0.83649 | 0.88425 | 0.54186 | batch size 降到 16 后，最终表现接近 `finetune1` |
+
+从最终指标看，`finetune2` 在 Recall、mAP@0.5 和 mAP@0.5:0.95 上均为三次实验中最高。对于 SKU-110K 这种密集货架商品检测任务，提高输入分辨率更有利于小目标和拥挤目标的识别。
+
+`finetune1` 与 `finetune3` 的最终指标接近，说明在当前设置下，将 batch size 从 32 降到 16 对最终性能影响较小。报告中仍需要结合逐 epoch 曲线分析其训练过程是否存在收敛速度、震荡幅度或验证指标稳定性的差异。
+
+## 训练趋势分析方式
+
+报告中的微调过程分析以 `results.csv` 为主，`results.png` 为辅助图。建议按以下维度梳理：
+
+| 分析维度 | 关注字段 | 写作重点 |
+| --- | --- | --- |
+| 训练收敛 | `train/box_loss`、`train/cls_loss`、`train/dfl_loss` | 比较三次实验的损失下降速度和后期稳定性 |
+| 验证泛化 | `val/box_loss`、`val/cls_loss`、`val/dfl_loss` | 判断验证损失是否同步下降，是否出现过拟合迹象 |
+| 检测质量 | `metrics/precision(B)`、`metrics/recall(B)` | 分析误检和漏检倾向的变化 |
+| 综合性能 | `metrics/mAP50(B)`、`metrics/mAP50-95(B)` | 比较整体检测能力和严格 IoU 条件下的表现 |
+| 学习率变化 | `lr/pg*` | 解释训练前期 warmup 和后期学习率衰减对曲线的影响 |
+
+个人报告可先比较三次关闭 Mosaic 微调的训练趋势，再把最终指标作为量化结论。这样可以避免只看最后一个 epoch，而忽略训练过程中的收敛速度和稳定性。
+
+## 组内对比计划
+
+后续组内比较建议固定 `batch size = 16`，再比较不同参数设置对训练趋势的影响。对比重点包括：
+
+| 对比方向 | 关注问题 |
+| --- | --- |
+| 模型容量 | `yolov8n.pt` 与更大模型是否提升 mAP，是否带来更慢收敛或更高显存压力 |
+| 数据增强 | 开启与关闭 Mosaic 后，前期收敛速度、Recall 和误检情况是否变化 |
+| 优化器策略 | 不同优化器或学习率设置是否影响震荡幅度和最终泛化能力 |
+| 输入尺寸 | 更高 `imgsz` 是否稳定提升密集小目标检测效果 |
+
+组内报告应优先比较相同 epoch 区间内的趋势变化，而不只比较最终指标。固定 batch size 后，可以减少显存和梯度更新规模差异带来的干扰。
+
+## 运行与复现
+
+安装依赖：
+
+```bash
+pip install -r requirements.txt
+```
+
+开始训练：
+
+```bash
+python train.py
+```
+
+测试预训练模型：
+
+```bash
+python test_model.py --pretrained
+```
+
+测试微调后模型：
+
+```bash
+python test_model.py --finetuned
+```
+
+对额外 5 张图片进行微调前后对比：
+
+```bash
+python test_extra_images.py
+```
+
+运行前需要确认 `config.py` 中的 `DATA_YAML`、`IMG_SIZE`、`BATCH_SIZE`、`PROJECT_NAME`、`RUN_NAME` 和 `TEST_IMAGES` 与当前实验一致。若要复现 `finetune1`、`finetune2` 或 `finetune3`，应参考对应 `docs/finetune_results/*/args.yaml` 中的参数。
+
+## 报告引用建议
+
+| 报告内容 | 推荐引用 |
+| --- | --- |
+| 微调参数和设置 | `docs/finetune_results/*/args.yaml` |
+| 性能比较表 | `docs/finetune_results/*/results.csv` 第 100 个 epoch |
+| 训练过程曲线 | `docs/finetune_results/*/results.png` |
+| 额外趋势分析 | `results.csv` 中每个 epoch 的 loss、Precision、Recall、mAP |
+| 原始输出复核 | `Yolo_finetune/*/` 中的完整训练图和验证可视化结果 |
+
+个人报告建议先写三次微调内部对比，再写组内固定 `batch size = 16` 条件下的横向比较，最后结合额外 5 张真实图片的检测结果分析模型泛化能力。
