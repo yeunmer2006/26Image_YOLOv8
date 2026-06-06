@@ -71,7 +71,12 @@ def get_model_path(is_pretrained=True):
     if is_pretrained:
         return config.MODEL_NAME
     else:
-        # 微调后模型路径
+        # 优先：weights/best.pt（集中管理）
+        central_path = "weights/best.pt"
+        if os.path.exists(central_path):
+            return central_path
+
+        # 回退：yolo_finetune/{RUN_NAME}/weights/best.pt（ultralytics 默认输出）
         best_path = f"{config.PROJECT_NAME}/{config.RUN_NAME}/weights/best.pt"
         last_path = f"{config.PROJECT_NAME}/{config.RUN_NAME}/weights/last.pt"
 
@@ -80,7 +85,9 @@ def get_model_path(is_pretrained=True):
         elif os.path.exists(last_path):
             return last_path
         else:
-            raise FileNotFoundError(f"微调模型未找到: {best_path} 或 {last_path}")
+            raise FileNotFoundError(
+                f"微调模型未找到: {central_path} 或 {best_path} 或 {last_path}"
+            )
 
 
 if __name__ == '__main__':

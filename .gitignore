@@ -18,7 +18,6 @@ venv/
 ENV/
 
 # YOLO & PyTorch 权重与运行结果 (建议忽略大文件)
-*.pt
 *.pth
 runs/
 Yolo_finetune/
