@@ -1,0 +1,32 @@
+{
+	"experiments": [
+		{
+			"name": "member1-baseline",
+			"member": "member1",
+			"results": "group_results/member1/results.csv",
+			"args": "group_results/member1/args.yaml",
+			"description": "Common baseline"
+		},
+		{
+			"name": "member2-model-variant",
+			"member": "member2",
+			"results": "group_results/member2/results.csv",
+			"args": "group_results/member2/args.yaml",
+			"description": "Change model variant only"
+		},
+		{
+			"name": "member3-augmentation",
+			"member": "member3",
+			"results": "group_results/member3/results.csv",
+			"args": "group_results/member3/args.yaml",
+			"description": "Change augmentation only"
+		},
+		{
+			"name": "member4-optimizer",
+			"member": "member4",
+			"results": "group_results/member4/results.csv",
+			"args": "group_results/member4/args.yaml",
+			"description": "Change optimizer setting only"
+		}
+	]
+}

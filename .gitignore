@@ -12,6 +12,7 @@ __pycache__/
 # 环境
 .env
 .venv
+.deps/
 env/
 venv/
 ENV/

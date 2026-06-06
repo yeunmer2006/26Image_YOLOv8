@@ -1,0 +1,4 @@
+name,member,model,batch,imgsz,mosaic,final_epoch,final_precision,final_recall,final_map50,final_map50_95,duration_seconds
+finetune1,,yolov8n.pt,32,640,0.0,100,0.90961,0.8355,0.88337,0.53988,5855.41
+finetune2,,yolov8n.pt,32,800,0.0,100,0.91051,0.85209,0.89545,0.55846,7246.57
+finetune3,,yolov8n.pt,16,640,0.0,100,0.90861,0.83649,0.88425,0.54186,7506.8
