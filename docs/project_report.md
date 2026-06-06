@@ -173,6 +173,20 @@ python analyze_experiments.py \
 
 **训练分辨率与推理分辨率的差距。** 训练 finetune2 时输入尺寸为 800，本次推理使用 `config.IMG_SIZE = 640`，模型在推理时把图 letterbox 到 640，可能损失一部分小目标细节。这一设置未在脚本层做参数切换，限制了对"高分辨率优势"的更严格验证。
 
+### 可视化对比
+
+每张图按"预训练 → 微调后"两行排列：
+
+| 图片 | 预训练 | 微调后 |
+| --- | --- | --- |
+| `img1` 谷物货架 | ![img1 pretrained](test_images/results/pretrained/img1.jpg) | ![img1 finetuned](test_images/results/finetuned/img1.jpg) |
+| `img2` 冷藏货架 | ![img2 pretrained](test_images/results/pretrained/img2.jpg) | ![img2 finetuned](test_images/results/finetuned/img2.jpg) |
+| `img3` 超市货架 | ![img3 pretrained](test_images/results/pretrained/img3.jpg) | ![img3 finetuned](test_images/results/finetuned/img3.jpg) |
+| `img4` 多层食品 | ![img4 pretrained](test_images/results/pretrained/img4.jpg) | ![img4 finetuned](test_images/results/finetuned/img4.jpg) |
+| `img5` 超市过道 | ![img5 pretrained](test_images/results/pretrained/img5.jpg) | ![img5 finetuned](test_images/results/finetuned/img5.jpg) |
+
+可视化产物位于 `test_images/results/{pretrained,finetuned}/` 下，与本节中的图片相对路径一一对应。
+
 ## 局限性
 
 - 每种个人配置仅训练一次，尚未通过多随机种子实验估计方差。
