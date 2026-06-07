@@ -319,17 +319,24 @@ def plot_metric_curves(experiments, output_path, smooth_window):
 
 def plot_loss_curves(experiments, output_path, smooth_window):
 	plt = import_plotting_library()
-	figure, axes = plt.subplots(2, 3, figsize=(16, 9), sharex=True)
+	figure = plt.figure(figsize=(16, 9))
+	grid = figure.add_gridspec(2, 6)
+	axes = [
+		figure.add_subplot(grid[0, 0:2]),
+		figure.add_subplot(grid[0, 2:4]),
+		figure.add_subplot(grid[0, 4:6]),
+		figure.add_subplot(grid[1, 1:3]),
+		figure.add_subplot(grid[1, 3:5]),
+	]
 	plot_items = [
 		("Train Box Loss", LOSS_COLUMNS["train_box_loss"]),
 		("Train Class Loss", LOSS_COLUMNS["train_cls_loss"]),
 		("Train DFL Loss", LOSS_COLUMNS["train_dfl_loss"]),
 		("Validation Box Loss", LOSS_COLUMNS["val_box_loss"]),
-		("Validation Class Loss", LOSS_COLUMNS["val_cls_loss"]),
 		("Validation DFL Loss", LOSS_COLUMNS["val_dfl_loss"]),
 	]
 
-	for axis, (title, column) in zip(axes.flat, plot_items):
+	for axis, (title, column) in zip(axes, plot_items):
 		has_data = False
 		for experiment in experiments:
 			metrics = experiment["metrics"]
@@ -355,9 +362,9 @@ def plot_loss_curves(experiments, output_path, smooth_window):
 				va="center",
 			)
 
-	for axis in axes[-1]:
+	for axis in axes:
 		axis.set_xlabel("Epoch")
-	axes[0, 0].legend()
+	axes[0].legend()
 	figure.suptitle(f"Training and Validation Losses (rolling window={smooth_window})")
 	figure.tight_layout()
 	figure.savefig(output_path, dpi=180, bbox_inches="tight")
