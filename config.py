@@ -59,6 +59,11 @@ WARMUP_EPOCHS = 3          # 预热轮数
 MOSAIC = 0.0                   # Mosaic增强比例，0.0表示关闭（数据增强消融实验）
 
 # ============ 测试配置 ============
+# 固定推理阈值，确保额外图片测试可复现
+PREDICT_CONF = 0.25
+PREDICT_IOU = 0.7
+PREDICT_MAX_DET = 300
+
 # 额外5张测试图片路径（根据环境自动适配）
 TEST_IMAGES = [
     f'{TEST_IMAGES_BASE}/img1.jpg',

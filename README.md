@@ -12,7 +12,7 @@
 | 数据集 | SKU-110K，非 COCO 数据集 |
 | 模型 | YOLOv8n |
 | 框架 | PyTorch，Ultralytics YOLOv8 |
-| 环境 | WSL2，Python 3.8+，RTX 4060 8GB |
+| 环境 | WSL2，Python 3.8+，vGPU 32GB |
 | 团队成员 | 刘易函、卓识、陈奕莱、皇甫泊宁 |
 
 SKU-110K 面向超市货架密集排列商品检测，适合验证模型在拥挤、遮挡、小目标密集分布场景中的迁移学习效果。
@@ -110,12 +110,10 @@ python analyze_experiments.py \
 
 后续组内比较建议固定 `batch size = 16`，再比较不同参数设置对训练趋势的影响。对比重点包括：
 
-| 对比方向 | 关注问题 |
-| --- | --- |
-| 模型容量 | `yolov8n.pt` 与更大模型是否提升 mAP，是否带来更慢收敛或更高显存压力 |
-| 数据增强 | 开启与关闭 Mosaic 后，前期收敛速度、Recall 和误检情况是否变化 |
-| 优化器策略 | 不同优化器或学习率设置是否影响震荡幅度和最终泛化能力 |
-| 输入尺寸 | 更高 `imgsz` 是否稳定提升密集小目标检测效果 |
+1. **Baseline调优组**：实验目的为 Baseline Tuning，使用 `yolov8n.pt` 预训练权重，变量设置为默认超参数。
+2. **模型容量对比组**：实验目的为 Scale，使用 `yolov8s.pt` 预训练权重，变量设置为默认超参数。
+3. **数据增强消融**：实验目的为 Augmentation，使用 `yolov8n.pt` 预训练权重，变量设置为关闭 Mosaic 增强。
+4. **优化策略调优组**：实验目的为 Optimizer，使用 `yolov8n.pt` 预训练权重，变量设置为将 SGD 优化器替换为 AdamW。
 
 组内报告应优先比较相同 epoch 区间内的趋势变化，而不只比较最终指标。固定 batch size 后，可以减少显存和梯度更新规模差异带来的干扰。
 
@@ -133,16 +131,28 @@ pip install -r requirements.txt
 python train.py
 ```
 
-测试预训练模型：
+在验证集测试预训练模型：
 
 ```bash
 python test_model.py --pretrained
 ```
 
-测试微调后模型：
+在验证集测试微调后模型：
 
 ```bash
 python test_model.py --finetuned
+```
+
+在相同测试集上比较微调前后模型：
+
+```bash
+python test_model.py \
+	--pretrained \
+	--finetuned \
+	--split test \
+	--imgsz 800 \
+	--batch 16 \
+	--output results/test_comparison
 ```
 
 对额外 5 张图片进行微调前后对比：
