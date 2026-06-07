@@ -1,0 +1,13 @@
+{
+  "model_name": "pretrained",
+  "model_path": "yolov8n.pt",
+  "data": "SKU-110K.yaml",
+  "split": "test",
+  "imgsz": 800,
+  "batch": 16,
+  "device": "0",
+  "precision": 0.12113987284287012,
+  "recall": 0.0024732336777007966,
+  "mAP50": 0.0006811428571428572,
+  "mAP50-95": 0.0003323998721283261
+}

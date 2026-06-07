@@ -1,0 +1,13 @@
+{
+  "model_name": "finetuned",
+  "model_path": "weights/best.pt",
+  "data": "SKU-110K.yaml",
+  "split": "test",
+  "imgsz": 800,
+  "batch": 16,
+  "device": "0",
+  "precision": 0.9117291872572726,
+  "recall": 0.8631830811964858,
+  "mAP50": 0.9156584126071461,
+  "mAP50-95": 0.5735681110607417
+}
